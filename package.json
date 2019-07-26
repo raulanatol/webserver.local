@@ -1,6 +1,6 @@
 {
   "name": "webserver.local",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple express local server with client-side routing",
   "main": "run.js",
   "bin": {
