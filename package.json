@@ -7,7 +7,7 @@
     "webserver.local": "run.js"
   },
   "scripts": {
-    "test": "jest"
+    "test": "echo 'tests'"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,10 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "express": "^4.17.1",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "update-notifier": "^3.0.1"
+  },
+  "devDependencies": {
+    "github-release-notes": "^0.17.0"
   }
 }

@@ -5,6 +5,10 @@ const path = require('path');
 const app = express();
 const chalk = require('chalk');
 const morgan = require('morgan');
+const pkg = require('./package');
+const updateNotifier = require('update-notifier');
+
+updateNotifier({ pkg }).notify({ isGlobal: true });
 
 const port = process.env.PORT || 3000;
 
