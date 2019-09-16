@@ -16,7 +16,7 @@ const argv = yargs
     alias: 'd',
     description: 'Base folder',
     type: 'string',
-    default: basePath
+    default: '.'
   })
   .option('port', {
     alias: 'p',
@@ -26,14 +26,16 @@ const argv = yargs
   })
   .help().alias('help', 'h').argv;
 
-app.use(express.static(argv.directory));
+const folder = argv.directory.startsWith('/') ? path.resolve(argv.directory) : path.join(basePath, argv.directory);
+
+app.use(express.static(folder));
 morgan('tiny');
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(argv.directory, 'index.html'));
+  res.sendFile(path.join(folder, 'index.html'));
 });
 
-console.log(chalk.blue('Starting up http server, serving'), chalk.yellow(argv.directory));
+console.log(chalk.blue('Starting up http server, serving'), chalk.yellow(folder));
 app.listen(argv.port, () => {
   console.log(' ');
   console.log('⚡️', chalk.green.bold(`http://127.0.0.1:${argv.port}`));
