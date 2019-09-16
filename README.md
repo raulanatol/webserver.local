@@ -12,3 +12,10 @@ $ npm install -g webserver.local
 ```console
 $ webserver.local
 ```
+
+Parameters:
+
+| Parameter       | Description         |
+| ----------------|---------------------|
+| -p, --port      | Port to open        |
+| -d, --directory | The index.html path | 
