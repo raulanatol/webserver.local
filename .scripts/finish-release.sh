@@ -52,9 +52,14 @@ function gitPush() {
   git push && git push --tags
 }
 
+function generate_release_notes() {
+  gren release --username=raulanatol --repo=webserver.local
+}
+
 uncommitted_changes
 check_branch
 change_version
 exists_tag
 publish
 gitPush
+generate_release_notes
