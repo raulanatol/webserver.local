@@ -24,12 +24,36 @@ const argv = yargs
     type: 'number',
     default: 3000
   })
+  .options('trace', {
+    alias: 't',
+    description: 'Trace mode',
+    type: 'boolean',
+    default: false
+  })
   .help().alias('help', 'h').argv;
 
 const folder = argv.directory.startsWith('/') ? path.resolve(argv.directory) : path.join(basePath, argv.directory);
 
+function generateMorganFormatter() {
+  if (argv.trace) {
+    return morgan(function(tokens, req, res) {
+      const headers = JSON.stringify(req.headers, null, 2);
+      const result = [
+        tokens.method(req, res),
+        tokens.url(req, res),
+        tokens.status(req, res),
+        tokens.res(req, res, 'content-length'), '-',
+        tokens['response-time'](req, res), 'ms',
+        `headers: ${headers}`
+      ];
+      return result.join(' ');
+    });
+  }
+  return morgan('tiny');
+}
+
+app.use(generateMorganFormatter());
 app.use(express.static(folder));
-morgan('tiny');
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(folder, 'index.html'));

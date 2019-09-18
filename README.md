@@ -19,3 +19,4 @@ Parameters:
 | ----------------|---------------------|
 | -p, --port      | Port to open        |
 | -d, --directory | The index.html path | 
+| -t, --trace     | Trace mode          |  
