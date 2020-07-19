@@ -47,3 +47,4 @@ verify_master_branch
 change_version
 test
 publish
+git push --tags
