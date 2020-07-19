@@ -26,13 +26,13 @@
   },
   "homepage": "https://github.com/raulanatol/webserver.local#readme",
   "dependencies": {
-    "chalk": "^2.4.2",
+    "chalk": "^4.1.0",
     "express": "^4.17.1",
-    "morgan": "^1.9.1",
-    "update-notifier": "^3.0.1",
-    "yargs": "^14.0.0"
+    "morgan": "^1.10.0",
+    "update-notifier": "^4.1.0",
+    "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "github-release-notes": "^0.17.0"
+    "github-release-notes": "^0.17.3"
   }
 }
