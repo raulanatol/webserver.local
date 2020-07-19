@@ -5,6 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Configure env
+        run: |
+          git config --local user.name "Github Actions"
+          git config --local user.email "actions@natol.es"
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Finish release
