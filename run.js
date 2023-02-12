@@ -2,14 +2,24 @@
 import chalk from 'chalk';
 import express from 'express';
 import morgan from 'morgan';
-import pkg from './package.json' assert { type: 'json' };
 import updateNotifier from 'update-notifier';
 import meow from 'meow';
 import { join, resolve } from 'node:path';
+import { readFile } from 'fs/promises';
+
+export const getPackageInfo = async () => {
+  const pkg = await readFile(new URL('./package.json', import.meta.url));
+  return JSON.parse(pkg);
+};
+
+export const autoUpdate = async () => {
+  const pkg = await getPackageInfo();
+  updateNotifier({ pkg }).notify({ isGlobal: true });
+};
 
 const basePath = process.cwd();
 const app = express();
-updateNotifier({ pkg }).notify({ isGlobal: true });
+autoUpdate().catch(console.error);
 
 const cli = meow(`
   Usage
