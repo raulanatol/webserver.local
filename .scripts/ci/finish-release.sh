@@ -20,9 +20,9 @@ function change_version() {
   npm version "$VERSION_PARAM"
 }
 
-function verify_master_branch() {
-  if [[ ${BRANCH} == 'master' ]]; then
-    echo "Master branch"
+function verify_main_branch() {
+  if [[ ${BRANCH} == 'main' ]]; then
+    echo "Main branch"
   else
     error "Invalid branch name ${BRANCH}"
   fi
@@ -43,7 +43,7 @@ function publish() {
 }
 
 verify_uncommitted_changes
-verify_master_branch
+verify_main_branch
 change_version
 test
 publish
