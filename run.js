@@ -1,41 +1,55 @@
 #!/usr/bin/env node
-const basePath = process.cwd();
-const express = require('express');
-const path = require('path');
-const app = express();
-const chalk = require('chalk');
-const morgan = require('morgan');
-const pkg = require('./package');
-const updateNotifier = require('update-notifier');
-const yargs = require('yargs');
+import chalk from 'chalk';
+import express from 'express';
+import morgan from 'morgan';
+import pkg from './package.json' assert { type: 'json' };
+import updateNotifier from 'update-notifier';
+import meow from 'meow';
+import { join, resolve } from 'node:path';
 
+const basePath = process.cwd();
+const app = express();
 updateNotifier({ pkg }).notify({ isGlobal: true });
 
-const argv = yargs
-  .option('directory', {
-    alias: 'd',
-    description: 'Base folder',
-    type: 'string',
-    default: '.'
-  })
-  .option('port', {
-    alias: 'p',
-    description: 'Port',
-    type: 'number',
-    default: 3000
-  })
-  .options('trace', {
-    alias: 't',
-    description: 'Trace mode',
-    type: 'boolean',
-    default: false
-  })
-  .help().alias('help', 'h').argv;
+const cli = meow(`
+  Usage
+    $ webserver.local <input>
 
-const folder = argv.directory.startsWith('/') ? path.resolve(argv.directory) : path.join(basePath, argv.directory);
+  Options
+    --port, -p Port to open
+    --directory, -d The index.html path
+    --trace, -t Trace mode
 
-function generateMorganFormatter() {
-  if (argv.trace) {
+  Examples
+    $ webserver.local --port 8080
+`, {
+  importMeta: import.meta,
+  autoHelp: true,
+  autoVersion: true,
+  flags: {
+    directory: {
+      type: 'string',
+      alias: 'd',
+      default: '.'
+    },
+    port: {
+      type: 'number',
+      alias: 'p',
+      default: 3000
+    },
+    trace: {
+      type: 'boolean',
+      alias: 't',
+      default: false
+    }
+  }
+});
+
+const { directory, port, trace } = cli.flags;
+const folder = directory.startsWith('/') ? resolve(directory) : join(basePath, directory);
+
+const generateMorganFormatter = () => {
+  if (trace) {
     return morgan(function(tokens, req, res) {
       const headers = JSON.stringify(req.headers, null, 2);
       const result = [
@@ -50,18 +64,18 @@ function generateMorganFormatter() {
     });
   }
   return morgan('tiny');
-}
+};
 
 app.use(generateMorganFormatter());
 app.use(express.static(folder));
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(folder, 'index.html'));
+  res.sendFile(join(folder, 'index.html'));
 });
 
 console.log(chalk.blue('Starting up http server, serving'), chalk.yellow(folder));
-app.listen(argv.port, () => {
+app.listen(port, () => {
   console.log(' ');
-  console.log('⚡️', chalk.green.bold(`http://127.0.0.1:${argv.port}`));
+  console.log('⚡️', chalk.green.bold(`http://127.0.0.1:${port}`));
 });
 
