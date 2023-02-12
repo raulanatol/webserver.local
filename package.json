@@ -7,7 +7,8 @@
     "webserver.local": "run.js"
   },
   "scripts": {
-    "test": "echo 'tests'"
+    "test": "echo 'tests'",
+    "start": "node run.js"
   },
   "repository": {
     "type": "git",
@@ -28,13 +29,17 @@
   "dependencies": {
     "chalk": "5.2.0",
     "express": "4.18.2",
+    "meow": "11.0.0",
     "morgan": "1.10.0",
-    "update-notifier": "6.0.2",
-    "yargs": "17.6.2"
+    "update-notifier": "6.0.2"
   },
   "engines": {
     "node": "=18.14.0",
     "npm": "=9.3.1"
   },
-  "engineStrict": true
+  "type": "module",
+  "engineStrict": true,
+  "devDependencies": {
+    "@types/node": "^18.13.0"
+  }
 }
